@@ -1,0 +1,24 @@
+[
+  {
+    "id": "3way",
+    "name": "3way",
+    "status": "ACTIVE",
+    "outcomes": [
+      {
+        "id": "3way-1",
+        "name": "1",
+        "status": "ACTIVE"
+      },
+      {
+        "id": "3way-2",
+        "name": "2",
+        "status": "ACTIVE"
+      },
+      {
+        "id": "3way-X",
+        "name": "X",
+        "status": "INACTIVE"
+      }
+    ]
+  }
+]

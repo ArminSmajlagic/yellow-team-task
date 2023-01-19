@@ -1,0 +1,181 @@
+version: "3"
+
+services:
+  # Main database
+  offersDB:
+    image: postgres
+    container_name: offersDB
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Qwertz123
+      - POSTGRES_DB=offers
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgsql_offers:/var/lib/postgresql/data/
+    networks:
+      - javaNet
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@aspnetrun.com
+      - PGADMIN_DEFAULT_PASSWORD=Qwertz123
+    restart: unless-stopped
+    ports:
+      - 5050:80
+    volumes:
+      - pgAdminData:/root/.pgadmin
+    networks:
+      - javaNet
+
+  # In memory solution for application state caching
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    ports:
+      - "6379:6379"
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+
+  # Everyting from below is not used in my application
+
+  # I suggest when u test kafka and zookeeper to use zookeeper and kafka from original site using these instructions: https://kafka.apache.org/quickstart
+  # Download Zookeeper & Apache kafka from here: https://www.apache.org/dyn/closer.cgi?path=/kafka/3.3.1/kafka_2.13-3.3.1.tgz
+
+# My solution doesn't work with zookeeper & kafka containers only with those mentioned above
+
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:5.3.0
+#    container_name: zookeeper
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#      ZOOKEEPER_SYNC_LIMIT: 2
+#    ports:
+#      - 2181:2181
+#    volumes:
+#      - zookeeper-data:/var/lib/zookeeper/data # for Data
+#      - zookeeper-logs:/var/lib/zookeeper/log # for transaction logs
+#
+#  kafka:
+#    container_name: kafka
+#    image: wurstmeister/kafka
+#    environment:
+#      KAFKA_LISTENERS: PLAINTEXT://localhost:9092
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_CREATE_TOPICS: "orderTopic"
+#    ports:
+#      - 9092:9094
+#    volumes:
+#      - kafka-data:/var/lib/kafka/data
+
+#  redpanda:
+#    container_name: redpanda
+#    image: vectorized/redpanda
+#    ports:
+#      - "8082:8082"
+#    command:
+#      - redpanda start
+#      - --smp 1
+#      - --overprovisioned
+#      - --node-id 0
+#      - --kafka-addr PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
+#      - --advertise-kafka-addr PLAINTEXT://redpanda:29092,OUTSIDE://localhost:9092
+#      - --pandaproxy-addr 0.0.0.0:8082
+#      - --advertise-pandaproxy-addr localhost:8082
+
+#  # Optional RMQ
+
+#  rabbitmq:
+#    image: rabbitmq:3-management-alpine
+#    container_name: rabbitmq
+#    restart: always
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+
+
+#  # Optional data storages
+
+#  elasticsearch:
+#    container_name: elasticsearch
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
+#    environment:
+#      - xpack.monitoring.enabled=true
+#      - xpack.watcher.enabled=false
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - discovery.type=single-node
+#    ports:
+#      - "9200:9200"
+#    volumes:
+#      - elasticsearchData:/usr/share/elasticsearch/data
+#    networks:
+#      - javaNet
+
+#  redisDB:
+#    image: redis:alpine
+#    restart: unless-stopped
+#    container_name: redisDB
+#    ports:
+#      - "6380:6380"
+#    networks:
+#      - javaNet
+
+#  mongodbDb:
+#    image: mongo
+#    container_name: mongodbDb
+#    restart: unless-stopped
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - mongodbData:/data/db
+#    networks:
+#      - javaNet
+
+#  mongo-express:
+#    image: mongo-express:latest
+#    container_name: mongo-express
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: admin # Mongo by default doesn't require username
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: admin # Mongo by default doesn't require password
+#      ME_CONFIG_MONGODB_SERVER: mongo
+#      ME_CONFIG_MONGODB_PORT: "27017"
+#    ports:
+#      - "0.0.0.0:8083:8083"
+#    networks:
+#      - javaNet
+#    depends_on:
+#      - mongo
+
+
+volumes:
+  pgsql_offers:
+  pgAdminData:
+  mongodbData:
+  elasticsearchData:
+  kafkaData:
+  zookeeperData:
+  zookeeperLogs:
+
+networks:
+  javaNet:
+    driver: bridge

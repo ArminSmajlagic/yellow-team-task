@@ -1,0 +1,42 @@
+package com.yellow.offer.Application.RMQReciever;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CountDownLatch;
+
+@Component
+@Profile("usingRmqProfile")
+public class Reciever {
+
+    private CountDownLatch latch = new CountDownLatch(1);
+
+    public void receiveMessage(String message) {
+        System.out.println("Received <" + message + ">");
+        latch.countDown();
+    }
+
+    public CountDownLatch getLatch() {
+        return latch;
+    }
+}
+
+//Now we can use RabbitTemplate to send messages & Receiver to receive messages
+
+//View the example bellow
+
+//    private final RabbitTemplate rabbitTemplate;
+//    private final Receiver receiver;
+//
+//    public Runner(Receiver receiver, RabbitTemplate rabbitTemplate) {
+//        this.receiver = receiver;
+//        this.rabbitTemplate = rabbitTemplate;
+//    }
+//
+//    @Override
+//    public void run(String... args) throws Exception {
+//        System.out.println("Sending message...");
+//        rabbitTemplate.convertAndSend(MessagingRabbitmqApplication.topicExchangeName, "foo.bar.baz", "Hello from RabbitMQ!");
+//        receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+//    }
+

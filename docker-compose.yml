@@ -55,7 +55,7 @@ services:
     ports:
       - 9411:9411
 
-  # Everyting from below is not used in my application
+  # Everyting from below is not used in my application by default, readme has more information on how to use containers bellow
 
   # I suggest when u test kafka and zookeeper to use zookeeper and kafka from original site using these instructions: https://kafka.apache.org/quickstart
   # Download Zookeeper & Apache kafka from here: https://www.apache.org/dyn/closer.cgi?path=/kafka/3.3.1/kafka_2.13-3.3.1.tgz

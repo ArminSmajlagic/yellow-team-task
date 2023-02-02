@@ -21,7 +21,7 @@ More details are avalable in the sections bellow :D
 - Http requests, DTOs
 - Swagger OpenAPI
 - Base requests, base entity, base controller & service with generics(To achieve DRY code)
-- Reading JSON data and performing data seeding and update data streaming with Kafka producers
+- Reading JSON data to performing data seeding and update data later with Apache Kafka
 - Dockerization of databases, administration tools, caching solution...
 
 ## Coming in a few days!
@@ -33,7 +33,7 @@ More details are avalable in the sections bellow :D
 - Tests
 - Gateway
 - Redpanda
-- Dockerization of zookeaper & kafka
+- Dockerization of Zookeaper & Kafka
 
 ## Links
 

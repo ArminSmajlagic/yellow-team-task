@@ -24,7 +24,7 @@ More details are avalable in the sections bellow :D
 - Reading JSON data to performing data seeding and update data later with Apache Kafka
 - Dockerization of databases, administration tools, caching solution...
 
-## Coming in a few days!
+<!--- ## Coming in a few days!
 
 - gRPC services
 - WebSockets 
@@ -34,6 +34,7 @@ More details are avalable in the sections bellow :D
 - Gateway
 - Redpanda
 - Dockerization of Zookeaper & Kafka
+-->
 
 ## Links
 
